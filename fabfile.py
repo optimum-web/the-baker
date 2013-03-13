@@ -17,6 +17,22 @@ def yum_update():
     run("yum update -y")
 
 
+def apt_get_upgrade():
+    '''apt-get upgrade of ubuntu server'''
+    run("apt-get update")
+    run("apt-get upgrade -y")
+
+
+def rh_ntpd_setup():
+    run("echo xen.independent_wallclock = 1 >> /etc/sysctl.conf")
+    run("chkconfig ntpd on")
+    run("service ntpd restart")
+
+
+def rh_timezone_setup():
+    run("ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime")
+
+
 def yum_cron_setup():
     '''Setup yum_cron script for nightly RPM updates'''
     run("yum install yum-cron -y")
