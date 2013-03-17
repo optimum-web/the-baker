@@ -15,8 +15,7 @@ def general_info():
 
 def install_epel_repo():
     '''Setup EPEL repo'''
-    repo = 'http://download.fedoraproject.org/pub/epel/6/x86_64'
-    run("rpm -Uvh $s/epel-release-6-8.noarch.rpm" % repo)
+    run("rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm")
 
 
 def yum_update():
@@ -79,16 +78,15 @@ def setup_ssh_keyless_entry(user):
 def setup_logwatch():
     '''Install and Configure Logwatch'''
     run("yum install logwatch -y")
-    run("cd /usr/share/logwatch/default.conf/")
-    run("mv logwatch.conf logwatch.conf.old")
-    put("./files/logwatch.conf /usr/share/logwatch/default.conf/logwatch.conf")
+    run("rm -f /usr/share/logwatch/default.conf/logwatch.conf")
+    put("./files/logwatch.conf", "/usr/share/logwatch/default.conf/logwatch.conf")
 
 
 def ssh_lockdown():
     '''Configure SSHd to my liking'''
     run("mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old")
-    put("./files/sshd_config /etc/ssh/sshd_config")
-    run("server sshd restart")
+    put("./files/sshd_config", "/etc/ssh/sshd_config")
+    run("service sshd restart")
 
 
 def add_user_to_sudo(user):
