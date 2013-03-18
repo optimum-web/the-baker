@@ -8,42 +8,42 @@ from crypt import crypt
 
 
 def general_info():
-    '''Retrieve hostname and disk infomation'''
+    '''Retrieve hostname and some general server info'''
     run("hostname")
     run("df -h")
+    run("free -m")
 
 
-def install_epel_repo():
-    '''Setup EPEL repo'''
+def rh_install_epel_6():
+    '''Setup EPEL repo on CentOS/RHEL 6'''
     run("rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm")
 
 
-def yum_update():
+def rh_yum_update():
     '''RedHat update all packages'''
     run("yum update -y")
 
 
-def ntpd_setup():
-    '''RedHat ntpd server setup on Xen VM'''
-    run("echo xen.independent_wallclock = 1 >> /etc/sysctl.conf")
+def rh_ntpd_setup():
+    '''RedHat ntpd server setup'''
     run("chkconfig ntpd on")
     run("service ntpd restart")
 
 
-def set_timezone_central():
-    '''RedHat set timezone to Central'''
+def rh_set_timezone_central():
+    '''RedHat set server timezone to Central'''
     run("rm -f /etc/localtime")
     run("ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime")
 
 
-def set_timezone_eastern():
-    '''RedHat set timezone to Eastern'''
+def rh_set_timezone_eastern():
+    '''RedHat set server timezone to Eastern'''
     run("rm -f /etc/localtime")
     run("ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime")
 
 
-def yum_cron_setup():
-    '''RedHat yum_cron script for nightly RPM updates'''
+def rh_yum_cron_setup():
+    '''RedHat yum_cron script for nightly updates'''
     run("yum install yum-cron -y")
     run("chkconfig yum-cron on")
     run("service yum-cron start")
@@ -67,33 +67,33 @@ def change_password(user):
     run('usermod -p %s %s' % (crypted_password, user), pty=False)
 
 
-def setup_ssh_keyless_entry(user):
-    '''Install inital SSH key pairs for user access'''
+def setup_ssh_keys(user):
+    '''Install SSH keypairs (must be ran as user)'''
     run("mkdir /home/%s/.ssh" % user)
     run("chmod 700 /home/%s/.ssh" % user)
     put("./files/id_rsa.pub", "/home/%s/.ssh/authorized_keys" % user)
     run("chmod 600 /home/%s/.ssh/authorized_keys" % user)
 
 
-def setup_logwatch():
+def rh_setup_logwatch():
     '''Install and Configure Logwatch'''
     run("yum install logwatch -y")
     run("rm -f /usr/share/logwatch/default.conf/logwatch.conf")
     put("./files/logwatch.conf", "/usr/share/logwatch/default.conf/logwatch.conf")
 
 
-def ssh_lockdown():
+def rh_ssh_lockdown():
     '''Configure SSHd to my liking'''
     run("mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old")
     put("./files/sshd_config", "/etc/ssh/sshd_config")
     run("service sshd restart")
 
 
-def add_user_to_sudo(user):
+def rh_add_user_to_sudo(user):
     '''Add a user to the sudoer file'''
     run("echo '%s ALL=(ALL) ALL' >> /etc/sudoers" % user)
 
 
-def install_fail2ban():
-    '''Install Fail2Ban (requires EPEL)'''
+def rh_install_fail2ban():
+    '''Install fail2ban (requires EPEL)'''
     run("yum install fail2ban -y")
