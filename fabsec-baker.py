@@ -4,29 +4,31 @@
 from __future__ import with_statement
 from fabric.api import *
 
-vic = ""
-master_u = ""
-master_p = ""
-add_user = ""
 
+class baker:
+    def __init__(self):
+        print 'Welcome to "The Baker Model IV" - '
+        print 'I am ready to cook up a new server.'
+        check1 = ""
+        while check1 != 'y':
+            self.vic = raw_input("Enter new server IP: ")
+            self.mu = raw_input("Enter super-user login: ")
+            self.mp = raw_input("Password for super-user: ")
+            print "\nOk so I got:\n"
+            print "IP: %s" % self.vic
+            print "Super User: %s" % self.mu
+            print"Password:%s" % self.mp
+            check1 = raw_input("Is this information correct (y/N)?").lower()
 
-def general_info():
-    '''Retrieve hostname and some general server info'''
-    with settings(host_string=vic, user=master_user, password=master_pass):
-        run("hostname")
-        run("df -h")
-        run("free -m")
+    def general_info(self):
+        '''Retrieve hostname and some general server info'''
+        print '\n Starting System check: logging in and gather base data.\n'
+        with settings(host_string=self.vic, user=self.mu, password=self.mp):
+            run("hostname")
+            run("df -h")
+            run("free -m")
 
 
 if __name__ == '__main__':
-    print 'Welcome to "The Baker Model IV" - '
-    print 'I am ready to cook up a new server.'
-    vic = raw_input("Enter new server IP: ")
-    master_u = raw_input("Enter super-user login: ")
-    master_p = raw_input("Password for super-user: ")
-    print "Ok so I got:"
-    print "IP: %s" % vic
-    print "Super User: %s" % master_u
-    print"Password:%s" % master_p
-    check1 = raw_input("Is this information correct (Y/n)?")
-    general_info()
+    bake = baker()
+    bake.general_info()
