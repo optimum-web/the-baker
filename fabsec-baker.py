@@ -32,3 +32,18 @@ class baker:
 if __name__ == '__main__':
     bake = baker()
     bake.general_info()
+
+    print 'Ok the system is ready to Rock & Roll...'
+    print '\nNow what are we cooking?\n'
+    print '[1] -  One time Yum update run'
+    print '[2} -  Yum update and Yum-cron install'
+    print '[3] -  Create user account and set password'
+    print '[4] -  Install SSH keys for a standard user account'
+    print '[5] -  Set user account to have sudo access'
+    print '[6] -  Setup NTPd service'
+    print '[7] -  Set server timezone (Central)'
+    print '[8] -  Set server timezone (Eastern)'
+    print '[9] -  Set server MOTD'
+    print '[10] - Setup Logwatch program'
+    print '[11] - Lockdown SSH (DO THIS LAST it locks out root access)'
+    print '[12] - End program'
