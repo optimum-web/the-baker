@@ -1,8 +1,7 @@
-fabsec
+The-Baker
 ======
 
-Collection of Fabric scripts to harden a fresh server
-
+A Collection of Fabric scripts to harden a fresh RHEL/CentOS system
 
 fabfile.py   - group of fab modules for hardening a server
 
