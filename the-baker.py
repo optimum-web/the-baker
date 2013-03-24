@@ -92,7 +92,7 @@ class baker():
 
     def ntpd(self):
         '''Setup ntpd server, set timezone to Central'''
-        with settings(host_string=self.vic, user=self.user, password=self.up):
+        with settings(host_string=self.vic, user=self.mu, password=self.mp):
             run("chkconfig ntpd on")
             run("service ntpd restart")
             run("rm -f /etc/localtime")
@@ -101,14 +101,14 @@ class baker():
 
     def motd(self):
         '''Install prefab MotD file'''
-        with settings(host_string=self.vic, user=self.user, password=self.up):
+        with settings(host_string=self.vic, user=self.mu, password=self.mp):
             run("mv /etc/motd /etc/motd.old")
             put("./files/motd", "/etc/motd")
         print"\n MOTD in the house..."
 
-    def logwatch():
+    def logwatch(self):
         '''Install and Configure Logwatch'''
-        with settings(host_string=self.vic, user=self.user, password=self.up):
+        with settings(host_string=self.vic, user=self.mu, password=self.mp):
             run("yum install logwatch -y")
             run("rm -f /usr/share/logwatch/default.conf/logwatch.conf")
             put("./files/logwatch.conf",
@@ -117,11 +117,12 @@ class baker():
 
     def ssh_lockdown(self):
         '''Configure SSHd to my liking'''
-        with settings(host_string=self.vic, user=self.user, password=self.up):
+        with settings(host_string=self.vic, user=self.mu, password=self.mp):
             run("mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old")
             put("./files/sshd_config", "/etc/ssh/sshd_config")
             print"Rebooting server in 1 minutes"
-            run("shutdown -r +1")
+            run("shutdown -r now")
+        print 'This cake is BAKED...enjoy'
 
     def enchilada(self):
         '''Run all in one go'''
